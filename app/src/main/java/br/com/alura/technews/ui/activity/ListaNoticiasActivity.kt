@@ -3,12 +3,14 @@ package br.com.alura.technews.ui.activity
 import android.content.Intent
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
+import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager.VERTICAL
 import br.com.alura.technews.R
 import br.com.alura.technews.model.Noticia
 import br.com.alura.technews.ui.activity.extensions.mostraErro
+import br.com.alura.technews.ui.fragment.ListaNoticiaFragment
 import br.com.alura.technews.ui.recyclerview.adapter.ListaNoticiasAdapter
 import br.com.alura.technews.ui.viewmodel.ListaNoticiasViewModel
 import kotlinx.android.synthetic.main.activity_lista_noticias.*
@@ -23,6 +25,22 @@ class ListaNoticiasActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_lista_noticias)
         title = TITULO_APPBAR
+    }
+
+    override fun onAttachFragment(fragment: Fragment?) {
+        super.onAttachFragment(fragment)
+
+        //faz a verificação se o fragment em questão é o fragment de exibição de lista de notícias
+        if(fragment is ListaNoticiaFragment){
+
+            fragment.quandoNoticiaSeleciona = {
+                abreVisualizadorNoticia(it)
+            }
+
+            fragment.quandoFabSalvaNoticiaClicado = {
+                abreFormularioModoCriacao()
+            }
+        }
     }
 
     private fun abreFormularioModoCriacao() {
